@@ -17,17 +17,11 @@ class PuppetDocsUrlsPlugin < Plugin
 		case topic
 			when '':
 				"PuppetDocs_urls: Convert link requests into Puppet Docs URLS. " +
-				"I will watch the channel for likely references (see subtopic " +
-				"'general'), and also respond to specific requests (see " +
-				"subtopic 'queries')."
-
-			when 'general':
-				"I can convert common references into URLs when I " +
-
-			when 'queries':
-				"You can ask me to lookup some info about a PuppetDocs bug, " +
-				"directly to get a response.  Example: '#{@bot.nick}: puppetdocsinfo " +
-				"#93' will produce a URL and the ticket's title."
+				"I will watch the channel for likely references. " +
+				"I can convert common references into URLs when I see them " +
+                                "in the channel if they are prefixed with 'ref' or 'guide'. " +
+                                "Hence you can query ref:type to get the Type Reference and " +
+                                "guide:introduction to get the Puppet Introduction."
 		end
 	end
 
@@ -84,10 +78,9 @@ class PuppetDocsUrlsPlugin < Plugin
 	def ref_into_url(base, ref)
 		case ref
                         when /ref:(\w+\#?\w+)/:
-                                [ref_url(base, project, $1), :ref]
+                                [ref_url(base, $1), :ref]
 		         when /guide:(\w+\#?\w+)/:
-                                [guide_url(base, project, $1), :guide]
-
+                                [guide_url(base, $1), :guide]
                 end
 	end
 
