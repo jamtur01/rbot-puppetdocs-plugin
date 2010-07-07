@@ -19,7 +19,7 @@ class PuppetDocsUrlsPlugin < Plugin
 				"PuppetDocs_urls: Convert link requests into Puppet Docs URLS. " +
 				"I will watch the channel for likely references. " +
 				"I can convert common references into URLs when I see them " +
-                                "in the channel if they are prefixed with 'ref' or 'guide'. " +
+                                "in the channel if they are prefixed with 'ref' or 'guides'. " +
                                 "Hence you can query ref:type to get the Type Reference and " +
                                 "guide:introduction to get the Puppet Introduction."
 		end
@@ -33,7 +33,7 @@ class PuppetDocsUrlsPlugin < Plugin
 		# chat messages
 		return unless m.kind_of?(PrivMessage) && m.public?
 
-		refs = m.message.scan(/(?:^|\W)(\[\S+\]|ref:\w+|guide:\w+)(?:$|\W)/).flatten
+		refs = m.message.scan(/(?:^|\W)(\[\S+\]|ref:\w+|guide:\w+|guides:\w+)(?:$|\W)/).flatten
 
 		# Do we have at least one possible reference?
 		return unless refs.length > 0
@@ -79,8 +79,11 @@ class PuppetDocsUrlsPlugin < Plugin
 		case ref
                         when /ref:(\w+\#?\w+)/:
                                 [ref_url(base, $1), :ref]
-		         when /guide:(\w+\#?\w+)/:
+		        when /guide:(\w+\#?\w+)/:
                                 [guide_url(base, $1), :guide]
+                        when /guides:(\w+\#?\w+)/:
+                                [guide_url(base, $1), :guide]
+
                 end
 	end
 
@@ -90,9 +93,9 @@ class PuppetDocsUrlsPlugin < Plugin
 	def css_query_for(reftype)
 		case reftype
 			when :ref:
-				'title'
+				'h1'
 			when :guide:
-				'title'
+				'h1'
 			else
 				warning "Unknown reftype: #{reftype}"; nil
 		end
