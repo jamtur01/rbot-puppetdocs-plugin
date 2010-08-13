@@ -2,7 +2,7 @@
 
 ## Requires the following gems:
 
-* mechanize
+* mechanize (1.x +)
 * nokogiri
 
 ## Configuration options (to be placed in conf.yaml)
