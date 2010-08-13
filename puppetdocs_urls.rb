@@ -172,8 +172,8 @@ class PuppetDocsUrlsPlugin < Plugin
 	# respond with 200 OK.
 	#
 	def page_element_contents(base, url, css_query)
-                WWW::Mechanize.html_parser = Nokogiri::HTML
-                a = WWW::Mechanize.new { |agent|
+                Mechanize.html_parser = Nokogiri::HTML
+                a = Mechanize.new { |agent|
                     agent.user_agent_alias = 'Mac Safari'
                 }
 
