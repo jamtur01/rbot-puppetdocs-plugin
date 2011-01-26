@@ -33,7 +33,7 @@ class PuppetDocsUrlsPlugin < Plugin
 		# chat messages
 		return unless m.kind_of?(PrivMessage) && m.public?
 
-		refs = m.message.scan(/(?:^|\W)|ref:\w+|guide:\w+|guides:\w+)(?:$|\W)/).flatten
+		refs = m.message.scan(/(?:^|\W)(ref:\w+|guide:\w+|guides:\w+)(?:$|\W)/).flatten
 
 		# Do we have at least one possible reference?
 		return unless refs.length > 0
