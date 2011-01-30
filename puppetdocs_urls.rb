@@ -39,7 +39,8 @@ class PuppetDocsUrlsPlugin < Plugin
 		return unless refs.length > 0
 
 		refs.each do |ref|
-			debug "We're out to handle '#{ref}'"
+                        return if ref.nil?
+ 			debug "We're out to handle '#{ref}'"
 
 			url, title = expand_reference(ref, m.target)
 
@@ -105,9 +106,9 @@ class PuppetDocsUrlsPlugin < Plugin
 	# if the channel isn't in the channelmap.
 	#
 	def base_url(target)
-             @bot.config['puppetdocs_urls.channelmap'].each { |l|
-                   l.scan(/^#{target}\:(.+)/) { |w| return $1 }
-             }
+                e = @bot.config['puppetdocs_urls.channelmap'].find {|c| c =~ /^#{target}:/ }
+		e.gsub(/^#{target}:/, '') unless e.nil?
+
 	end
 
 	def ref_url(base_url, ref)
